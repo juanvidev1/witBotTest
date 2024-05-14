@@ -1,6 +1,6 @@
 class ChatbotService {
   getWitResponse = async (message) => {
-    console.log("Enter to route");
+    // console.log("Enter to route");
 
     let queryURI = `https://api.wit.ai/message?v=20200923&q=${message}`;
     const response = await fetch(encodeURI(queryURI), {
@@ -9,21 +9,20 @@ class ChatbotService {
       },
     });
     const data = await response.json();
-    // console.log("Datos", data.entities["wit$wikipedia_search_query:wikipedia_search_query"][0].value);
+    // console.log("Datos", data);
+    let wikiQueryWord;
 
     if (
       data.entities &&
       data.entities["wit$wikipedia_search_query:wikipedia_search_query"]
     ) {
-      let wikiQueryWord =
+      wikiQueryWord =
         data.entities["wit$wikipedia_search_query:wikipedia_search_query"][0]
           .value;
-
-      return wikiQueryWord;
     } else {
-      wikiQueryWord = "There's no search word";
-      return wikiQueryWord;
+      wikiQueryWord = "Not found";
     }
+    return wikiQueryWord;
   };
 }
 
