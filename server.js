@@ -1,11 +1,29 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 const chatbotApi = require("./routes/index.js");
 require("dotenv").config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// We can give access only to specific domains
+const whitelist = [
+  "http://localhost:5000/",
+  "http://localhost:3000/",
+  "http://localhost:5500/",
+  "http://127.0.0.1:5500",
+];
+const options = {
+  origin: (origin, callback) => {
+    if (whitelist.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error("No permitido"));
+    }
+  },
+};
+app.use(cors(options));
 app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
