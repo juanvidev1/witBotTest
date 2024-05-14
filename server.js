@@ -14,7 +14,7 @@ const whitelist = [
   "http://localhost:5500/",
   "http://127.0.0.1:5500",
   "https://witbottest.onrender.com",
-  "https://juanvidev1.github.io/wikiChatBot/",
+  "https://juanvidev1.github.io/",
 ];
 const options = {
   origin: (origin, callback) => {
