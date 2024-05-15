@@ -2,20 +2,17 @@ const cheerio = require("cheerio");
 const axios = require("axios");
 
 class WebScrappingService {
-  async getWebPageData(url) {
+  async getWebPageData(url, selectorName, ...args) {
     console.log("Into ws route");
-    if (!url) {
-      console.log("Takes the if");
-      return {
-        error: "An url is mandatory",
-      };
-    }
+    let argsArray = args[0];
+    console.log(argsArray);
 
     const webRes = await axios.get(url);
     const response = webRes.data;
 
     const $ = cheerio.load(response);
-    const selector = $("div.entry-content");
+    // const selector = $("div.entry-content");
+    const selector = $(selectorName);
 
     if (selector.length === 0) {
       return {
@@ -23,7 +20,12 @@ class WebScrappingService {
       };
     }
 
-    const keyWords = ["strike", "Apple", "Maryland", "Bloomberg"];
+    // Here we set a keywords array using the arguments passed to the function different from url and selector
+    const keyWords = [];
+    argsArray.forEach((arg) => {
+      keyWords.push(arg);
+    });
+
     let results = [];
 
     keyWords.forEach((word) => {

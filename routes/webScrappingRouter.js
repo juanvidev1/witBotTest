@@ -12,8 +12,24 @@ webScrappingRouter.post("/", async (req, res) => {
       });
     }
 
-    const url = req.body.url;
-    const response = await webScrappingService.getWebPageData(url);
+    // console.log("Body", req.body);
+    const bodyObj = req.body;
+
+    const url = bodyObj.url;
+    const selector = bodyObj.selector;
+
+    let argsArray = [];
+    Object.entries(bodyObj).forEach(([key, value]) => {
+      if (key !== "url" && key !== "selector") {
+        argsArray.push(value);
+      }
+    });
+
+    const response = await webScrappingService.getWebPageData(
+      url,
+      selector,
+      argsArray
+    );
     return res.json(response);
   } catch (error) {
     console.error("Error", error);
